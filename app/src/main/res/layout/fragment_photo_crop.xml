@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2"
+                android:weightSum="3"
                 >
 
             <Button
@@ -68,7 +68,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Обрезать" />
+                android:text="Обрезать документ" />
+                <Button
+                    android:id="@+id/btnImageLight"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Увеличить яркость" />
             <Button
                 android:id="@+id/btnImageClarity"
                 style="@style/Widget.AppCompat.Button.Colored"

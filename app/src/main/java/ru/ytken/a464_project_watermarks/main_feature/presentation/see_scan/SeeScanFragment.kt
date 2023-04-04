@@ -57,10 +57,32 @@ class SeeScanFragment: Fragment(R.layout.fragment_scan_result) {
                 }
             }
         }
+        setFragmentResultListener("fromImageToSeeScan2") {
+                _, bun ->
+            val str = bun.getString("uri")
+            val uri = Uri.parse(
+                str
+            )
+            fileWithImage = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
+            imageViewSkanned.setImageBitmap(fileWithImage)
+            if (fileWithImage != null) {
+                processImage2(fileWithImage!!.toGrayscale()!!)
+            }
+            val fdelete = vm.getFilePath(uri, requireContext())?.let { File(it) }
+            if (fdelete!!.exists()) {
+                if (fdelete.delete()) {
+                } else {
+                }
+            }
+        }
 
         setFragmentResultListener("arrayList") {
                 _, bun ->
                 vm.lineBounds = bun.getSerializable("array") as ArrayList<Int>
+        }
+
+        for (i in vm.lineBounds) {
+            Log.d("lineline","{$i}")
         }
 
         imageButtonNoSkan.setOnClickListener {
@@ -110,6 +132,37 @@ class SeeScanFragment: Fragment(R.layout.fragment_scan_result) {
                     vm.setLetterText(resMatrix)
 //                }
 
+            } catch (e: java.lang.IndexOutOfBoundsException) {
+                Toast.makeText(context, "К сожалению изображение не содержит водяной знак!", Toast.LENGTH_SHORT).show()
+            }
+            progressBarWaitForScan.visibility = View.INVISIBLE
+            textViewProgress.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun processImage2(fileWithImage: Bitmap) = lifecycleScope.launch(Dispatchers.Main) {
+        progressBarWaitForScan.visibility = View.VISIBLE
+        textViewProgress.visibility = View.VISIBLE
+        textViewProgress.text = getString(R.string.ScanningImage)
+
+        fileWithImage.let {
+            imageButtonNoSkan.visibility = View.VISIBLE
+            val watermarkSize = 24
+            val resMatrix = ""
+            val lineBounds = vm.lineBounds
+            for (i in lineBounds) {
+                Log.d("$i","okioki")
+            }
+            try{
+                val lineIntervals = ArrayList<Int>()
+                for (i in 1 until lineBounds.size)
+                    lineIntervals.add(lineBounds[i]-lineBounds[i-1])
+                for (i in lineIntervals) {
+                    Log.d("$i","iiiii")
+                }
+                val watermark = Watermarks.getWatermark(lineIntervals)
+                setTextButton(watermark?.subSequence(0,watermarkSize).toString())
+                vm.setLetterText(resMatrix)
             } catch (e: java.lang.IndexOutOfBoundsException) {
                 Toast.makeText(context, "К сожалению изображение не содержит водяной знак!", Toast.LENGTH_SHORT).show()
             }

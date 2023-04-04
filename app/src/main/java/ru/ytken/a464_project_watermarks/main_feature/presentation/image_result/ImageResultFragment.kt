@@ -58,6 +58,48 @@ class ImageResultFragment: Fragment(R.layout.fragment_image_result) {
                 }
             }
         }
+        setFragmentResultListener("fromLightToImage") {
+                _, bun ->
+            val str = bun.getString("uri")
+            val uri = Uri.parse(
+                str
+            )
+            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
+            vm.findTextInBitmap(bitmap)
+            val fdelete = vm.getFilePath(uri, requireContext())?.let { File(it) }
+            if (fdelete!!.exists()) {
+                if (fdelete.delete()) {
+                } else {
+                }
+            }
+        }
+        buttonSeeSkan2.setOnClickListener {
+            vm.setScanImageToInit()
+            val bit = vm.scanImage.value
+            val bytes = ByteArrayOutputStream()
+            bit!!.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+            val path: String = MediaStore.Images.Media.insertImage(
+                requireActivity().contentResolver,
+                bit,
+                "IMG_" + Calendar.getInstance().time,
+                null
+            )
+            val uri = Uri.parse(path)
+            setFragmentResult(
+                "fromImageToSeeScan2",
+                bundleOf("uri" to uri.toString())
+            )
+            val arr = vm.lineBounds
+            for (i in vm.lineBounds) {
+                Log.d("$i","lollol")
+            }
+
+            setFragmentResult(
+                "arrayList",
+                bundleOf( "array" to arr)
+            )
+            findNavController().navigate(R.id.action_imageResultFragment_to_seeScanFragment)
+        }
         buttonSeeSkan.setOnClickListener {
             vm.setScanImageToInit()
             val bit = vm.scanImage.value
@@ -78,8 +120,6 @@ class ImageResultFragment: Fragment(R.layout.fragment_image_result) {
             for (i in vm.lineBounds) {
                 Log.d("$i","lollol")
             }
-
-            val args: Bundle = Bundle()
 
             setFragmentResult(
                 "arrayList",

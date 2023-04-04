@@ -77,7 +77,26 @@ internal class PhotoCropFragment : Fragment(R.layout.fragment_photo_crop) {
                     findNavController().navigate(R.id.action_photoCropFragment_to_improveClarifyFragment)
                 }
             }
-
+            btnImageLight.setOnClickListener {
+                lifecycleScope.launch {
+                    progressBar.isVisible = true
+                    val image = document_scanner.getCroppedImage()
+                    progressBar.isVisible = false
+                    result_image.isVisible = false
+                    result_image.setImageBitmap(image)
+                    val bytes = ByteArrayOutputStream()
+                    image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+                    val path: String = MediaStore.Images.Media.insertImage(
+                        requireActivity().contentResolver,
+                        image,
+                        "IMG_" + Calendar.getInstance().time,
+                        null
+                    )
+                    val uri = Uri.parse(path)
+                    setFragmentResult("fromCropToLight", bundleOf("uri" to uri.toString()))
+                    findNavController().navigate(R.id.action_photoCropFragment_to_improveLightFragment)
+                }
+            }
             btnImageCrop.setOnClickListener {
                 lifecycleScope.launch {
                     progressBar.isVisible = true
