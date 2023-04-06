@@ -128,4 +128,9 @@ internal class PhotoCropFragment : Fragment(R.layout.fragment_photo_crop) {
     companion object {
         private var angle1 = 0
     }
+
+    override fun onDestroy() {
+        angle1 = 0
+        super.onDestroy()
+    }
 }
