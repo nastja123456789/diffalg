@@ -18,6 +18,9 @@ import kotlinx.android.synthetic.main.fragment_image_result.buttonSeeSkan
 import kotlinx.android.synthetic.main.fragment_image_result.imageButtonClose
 import kotlinx.android.synthetic.main.fragment_image_result.imageViewResultImage
 import kotlinx.android.synthetic.main.fragment_improve_light.*
+import kotlinx.android.synthetic.main.fragment_improve_light.view.*
+import kotlinx.android.synthetic.main.fragment_photo_crop.*
+import kotlinx.android.synthetic.main.fragment_photo_crop.view.*
 import ru.ytken.a464_project_watermarks.R
 import ru.ytken.a464_project_watermarks.main_feature.utils.BitmapExtensions.makeImageSharpGaussian
 import ru.ytken.a464_project_watermarks.main_feature.utils.BitmapExtensions.setBrightnessContrast
@@ -36,7 +39,10 @@ class ImproveLightFragment : Fragment(R.layout.fragment_improve_light) {
                 str
             )
             val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
-            bitmap.apply {
+//            val bitmapp = bitmap.setBrightnessContrast()
+
+//            val bitmapp =
+                bitmap.apply {
                 imageViewResultImage.setImageBitmap(this)
                 seekBarBrightness.setOnSeekBarChangeListener(object:
                     SeekBar.OnSeekBarChangeListener{
@@ -47,7 +53,7 @@ class ImproveLightFragment : Fragment(R.layout.fragment_improve_light) {
                     ) {
                         val brightness = progress.toFloat()-200
                         val contrast = seekBarContrast.progress.toFloat()/10F
-
+                        bit = bitmap.setBrightnessContrast(brightness, contrast)
                         imageViewResultImage.setImageBitmap(
                             setBrightnessContrast(
                                 brightness=brightness,
@@ -72,7 +78,7 @@ class ImproveLightFragment : Fragment(R.layout.fragment_improve_light) {
                     ) {
                         val brightness = seekBarBrightness.progress.toFloat()-200
                         val contrast = progress.toFloat()/10F
-
+                        bit = bitmap.setBrightnessContrast(brightness, contrast)
                         imageViewResultImage.setImageBitmap(
                             setBrightnessContrast(
                                 brightness=brightness,
@@ -88,16 +94,17 @@ class ImproveLightFragment : Fragment(R.layout.fragment_improve_light) {
                     }
                 })
             }
-//            val bitmapp = bitmap.setBrightnessContrast()
-//            imageViewResultImage.setImageBitmap(bitmapp)
+//                .setBrightnessContrast()
+            val bitmapp = bitmap.setBrightnessContrast()
+            imageViewResultImage.setImageBitmap(bitmapp)
             buttonSeeSkan.setOnClickListener {
                 val bytes = ByteArrayOutputStream()
-                if (bitmap != null) {
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+                if (bit != null) {
+                    bit!!.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
                 }
                 val path: String = MediaStore.Images.Media.insertImage(
                     requireActivity().contentResolver,
-                    bitmap,
+                    bit,
                     "IMG_" + Calendar.getInstance().time,
                     null
                 )
@@ -112,5 +119,8 @@ class ImproveLightFragment : Fragment(R.layout.fragment_improve_light) {
         imageButtonClose.setOnClickListener {
             findNavController().popBackStack()
         }
+    }
+    companion object{
+        var bit:Bitmap ?= null
     }
 }
