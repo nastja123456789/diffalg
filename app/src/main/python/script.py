@@ -319,24 +319,18 @@
 # # p.start()
 # # p.join()
 
-
 import numpy as np
 from scipy.stats import multivariate_normal
-
-
 
 def gmm_alg(M):
     x = np.zeros((len(M), 2))
     for i, a in enumerate(M):
         x[i] = [i, a**2]
-    np.random.seed(70)
-    gm = GMM(3)
-    # gm = GaussianMixture()
+    # np.random.seed(70)
+    # gm = GMM(4)
+    gm = GMM(2)
     gm.fit(x)
     clusters = gm.predict(x)
-    # gmm = GMM(x, 3, 50)
-    # gmm.run()
-    # clusters = gmm.predict([[0.5, 0.5]])
     first = []
     zeros = []
     for i, j in enumerate(clusters):
@@ -369,29 +363,6 @@ def gmm_alg(M):
                 watermark += "0"
             else:
                 watermark += "1"
-    # first = []
-    # zeros = []
-    # # разделение массива на два, соответствующих кластерам
-    # for i, j in enumerate(clusters):
-    #     if j == 1:
-    #         first.insert(0, M[i])
-    #     else:
-    #         zeros.insert(0, M[i])
-    #
-    # watermark = ""
-    # if statistics.mode(zeros) > statistics.mode(first):
-    #     for j in clusters:
-    #         if j == 0:
-    #             watermark += "1"
-    #         else:
-    #             watermark += "0"
-    # else:
-    #     for j in clusters:
-    #         if j == 0:
-    #             watermark += "0"
-    #         else:
-    #             watermark += "1"
-
     return watermark
 
 
@@ -407,8 +378,8 @@ class GMM:
         self.n, self.m = self.shape
 
         self.phi = np.full(shape=self.k, fill_value=1/self.k)
-        self.weights = np.full( shape=self.shape, fill_value=1/self.k)
-
+        self.weights = np.full(shape=self.shape, fill_value=1/self.k)
+        # random_row = [1,3,3,3,3]
         random_row = np.random.randint(low=0, high=self.n, size=self.k)
         self.mu = [  X[row_index,:] for row_index in random_row ]
         self.sigma = [ np.cov(X.T) for _ in range(self.k) ]
