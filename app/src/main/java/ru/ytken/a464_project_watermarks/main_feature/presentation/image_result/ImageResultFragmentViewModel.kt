@@ -79,7 +79,6 @@ class ImageResultFragmentViewModel: ViewModel() {
 
                     if (maxBlocks != null) {
                         for (block in maxBlocks!!) {
-//                            val blockText = block.text
                             for (line in block.lines) {
                                 line.boundingBox?.let {
                                     shapeDrawable.bounds = it
@@ -88,16 +87,9 @@ class ImageResultFragmentViewModel: ViewModel() {
                                 shapeDrawable.draw(canvas)
                             }
                         }
-//                        for (block in maxBlocks!!) {
-//                            for (line in block.lines) {
-//                                line.boundingBox?.let {
-//                                    shapeDrawable.bounds = it
-//                                    lineBounds.add(it.centerY())
-//                                    Log.d("adding","${it.centerY()}")
-//                                }
-//                                shapeDrawable.draw(canvas)
-//                            }
-//                        }
+                        for (i in lineBounds) {
+                            Log.d("lineline","$i")
+                        }
                         liveHasText.value = true
                     } else {
                         liveHasText.value = false

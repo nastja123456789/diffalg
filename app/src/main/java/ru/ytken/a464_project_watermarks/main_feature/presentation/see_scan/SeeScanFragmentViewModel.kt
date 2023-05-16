@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -15,6 +16,17 @@ class SeeScanFragmentViewModel: ViewModel() {
 
     fun setLetterText(text: String) {
         liveScanLettersText.value = text
+        Log.d("100000000000", text)
+    }
+
+    fun compareStrings(str1: String): Double {
+        var count = 0.0
+        for (i in str1.indices) {
+            if (str1[i] == str2[i]) {
+                count++
+            }
+        }
+        return (count / str1.length) * 100
     }
 
     fun getFilePath(uri: Uri, context: Context): String? {
@@ -28,5 +40,8 @@ class SeeScanFragmentViewModel: ViewModel() {
             return picturePath
         }
         return null
+    }
+    companion object{
+        val str2: String = "010010000101001101000101"
     }
 }

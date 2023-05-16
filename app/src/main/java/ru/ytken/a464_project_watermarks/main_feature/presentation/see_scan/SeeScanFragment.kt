@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -15,21 +14,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import kotlinx.android.synthetic.main.fragment_scan_result.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.ytken.a464_project_watermarks.R
 import ru.ytken.a464_project_watermarks.main_feature.domain.use_cases.SavedImageFactoryUseCase
 import ru.ytken.a464_project_watermarks.main_feature.presentation.see_scan.utils.Watermarks
 import ru.ytken.a464_project_watermarks.main_feature.utils.BitmapExtensions.toGrayscale
 import java.io.File
-import kotlin.coroutines.suspendCoroutine
 
 class SeeScanFragment: Fragment(R.layout.fragment_scan_result) {
     private val vm: SeeScanFragmentViewModel by viewModels {
@@ -130,6 +125,8 @@ class SeeScanFragment: Fragment(R.layout.fragment_scan_result) {
 //                val watermark = Watermarks.getWatermark(lineIntervals)
                     setTextButton(watermark?.subSequence(0,watermarkSize).toString())
                     vm.setLetterText(resMatrix)
+                    val res = vm.compareStrings(watermark?.subSequence(0,watermarkSize).toString())
+                    Toast.makeText(context, "$res %", Toast.LENGTH_SHORT).show()
 //                }
 
             } catch (e: java.lang.IndexOutOfBoundsException) {
@@ -163,11 +160,16 @@ class SeeScanFragment: Fragment(R.layout.fragment_scan_result) {
                 val watermark = Watermarks.getWatermark(lineIntervals)
                 setTextButton(watermark?.subSequence(0,watermarkSize).toString())
                 vm.setLetterText(resMatrix)
+                val res = vm.compareStrings(watermark?.subSequence(0,watermarkSize).toString())
+                Toast.makeText(context, "$res %", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "${resMatrix}", Toast.LENGTH_SHORT).show()
+//                var res : Double?=0.0
             } catch (e: java.lang.IndexOutOfBoundsException) {
                 Toast.makeText(context, "К сожалению изображение не содержит водяной знак!", Toast.LENGTH_SHORT).show()
             }
             progressBarWaitForScan.visibility = View.INVISIBLE
             textViewProgress.visibility = View.INVISIBLE
+
         }
     }
 

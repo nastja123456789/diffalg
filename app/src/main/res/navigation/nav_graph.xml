@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_photoCropFragment_to_improveLightFragment"
             app:destination="@id/improveLightFragment" />
+        <action
+            android:id="@+id/action_photoCropFragment_to_newAlgFragment"
+            app:destination="@id/newAlgFragment" />
     </fragment>
     <fragment
         android:id="@+id/improveClarifyFragment"
@@ -72,5 +75,19 @@
             android:id="@+id/action_improveLightFragment_to_imageResultFragment"
             app:destination="@id/imageResultFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newAlgFragment"
+        android:name="ru.ytken.a464_project_watermarks.main_feature.presentation.new_alg.NewAlgFragment"
+        android:label="fragment_new_alg"
+        tools:layout="@layout/fragment_new_alg" >
+        <action
+            android:id="@+id/action_newAlgFragment_to_resultNewAlgFragment"
+            app:destination="@id/resultNewAlgFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultNewAlgFragment"
+        android:name="ru.ytken.a464_project_watermarks.main_feature.presentation.new_alg.ResultNewAlgFragment"
+        android:label="fragment_result_new_alg"
+        tools:layout="@layout/fragment_result_new_alg" />
 
 </navigation>
