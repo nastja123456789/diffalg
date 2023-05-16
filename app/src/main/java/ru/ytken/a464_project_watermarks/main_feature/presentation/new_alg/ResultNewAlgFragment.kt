@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.ytken.a464_project_watermarks.R
 import ru.ytken.a464_project_watermarks.main_feature.domain.use_cases.SavedImageFactoryUseCase
+import ru.ytken.a464_project_watermarks.main_feature.presentation.see_scan.SeeScanFragmentViewModel
 import ru.ytken.a464_project_watermarks.main_feature.utils.BitmapExtensions.toGrayscale
 import java.io.File
 import kotlin.math.sqrt
@@ -85,6 +86,7 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
             Log.d("alalalala","${lineBounds.size}")
             try{
                 val lineIntervals = ArrayList<ArrayList<Int>>()
+                var watermarking = ""
                 for (line in lineBounds) {
                     if (line.size%8!=0) {
                         val lenth = line.size-line.size%8
@@ -97,6 +99,27 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
                         for (i in num) {
                             avg.add(i.average().toInt())
                         }
+                        for (i in num) {
+                            val sr = i.average().toInt()
+                            var war=""
+                            for (j in i) {
+                                if (j<=sr) {
+                                    war += 0
+                                } else {
+                                    war += 1
+                                }
+                            }
+                            Log.d(war,"warwarwar")
+                            val comp1 = compareStr(war, "00001111")
+                            Log.d(comp1.toString(),"comp1comp1")
+                            val comp2 = compareStr(war, "11110000")
+                            Log.d(comp2.toString(),"comp2comp2")
+                            if (comp1>comp2) {
+                                watermarking+=1
+                            } else {
+                                watermarking+=0
+                            }
+                        }
                         avgLine.add(avg)
                     } else {
                         lineIntervals.add(line)
@@ -104,16 +127,38 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
                         for (i in num) {
                             avg.add(i.average().toInt())
                         }
+                        for (i in num) {
+                            val sr = i.average().toInt()
+                            var war=""
+                            for (j in i) {
+                                if (j<=sr) {
+                                    war += 0
+                                } else {
+                                    war += 1
+                                }
+                            }
+                            Log.d(war,"warwarwar")
+                            val comp1 = compareStr(war, "00001111")
+                            Log.d(comp1.toString(),"comp1comp1")
+                            val comp2 = compareStr(war, "11110000")
+                            Log.d(comp2.toString(),"comp2comp2")
+                            if (comp1>comp2) {
+                                watermarking+=1
+                            } else if (comp2<comp1){
+                                watermarking+=0
+                            }
+                        }
                         avgLine.add(avg)
                     }
                 }
                 for (i in avg) {
                     Log.d("$i","iiiii")
                 }
-                val result = res(avg)
-                setTextButton(result.subSequence(0,24).toString())
+//                val result = res(avg)
+//                setTextButton(result.subSequence(0,24).toString())
+                setTextButton(watermarking.subSequence(0,24).toString())
                 vm.setLetterText(resMatrix)
-                val res = vm.compareStrings(result.subSequence(0,watermarkSize).toString())
+                val res = vm.compareStrings(watermarking.subSequence(0,watermarkSize).toString())
                 Toast.makeText(context, "$res %", Toast.LENGTH_SHORT).show()
             } catch (e: java.lang.IndexOutOfBoundsException) {
                 Toast.makeText(context, "К сожалению изображение не содержит водяной знак!", Toast.LENGTH_SHORT).show()
@@ -122,6 +167,16 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
             textViewProgress.visibility = View.INVISIBLE
 
         }
+    }
+
+    private fun compareStr(str1: String, str2: String): Double {
+        var count = 0.0
+        for (i in str1.indices) {
+            if (str1[i] == str2[i]) {
+                count++
+            }
+        }
+        return count / str1.length
     }
 
     private fun res(line: ArrayList<Int>): String {
