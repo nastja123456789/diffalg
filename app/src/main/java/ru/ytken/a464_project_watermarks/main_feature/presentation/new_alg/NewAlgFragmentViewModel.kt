@@ -95,6 +95,7 @@ class NewAlgFragmentViewModel: ViewModel() {
                                     for (element in line.elements) {
 //                                        symBounds.clear()
                                         for (char in element.symbols) {
+                                            Log.d(char.text,"yyyyyyy")
                                             char.boundingBox?.let {
                                                 shapeDrawable.bounds = it
                                                 symBounds.add(it.width())
@@ -105,20 +106,15 @@ class NewAlgFragmentViewModel: ViewModel() {
                                             }
                                         }
                                     }
+                                    Log.d("$symBounds","symsymsym")
                                     lineBounds.add(symBounds)
                                 }
                             }
                             for (line in lineBounds) {
-                                for (el in line) {
-                                    Log.d("elelel","$el")
-                                }
+                                    Log.d("elelel","$line")
                             }
                             Log.d("${lineBounds.size}","alalalala")
                             liveHasText.value = true
-
-//                            for (line in lineBounds) {
-//
-//                            }
                         } else {
                             liveHasText.value = false
                         }

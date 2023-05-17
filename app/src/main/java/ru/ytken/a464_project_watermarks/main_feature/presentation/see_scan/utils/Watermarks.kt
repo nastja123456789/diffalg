@@ -18,7 +18,7 @@ object Watermarks {
         val meanInterval = line.mean()
         Log.d("$meanInterval","33333")
         val stdIntervals = line.std()
-        if (stdIntervals < 0.4) return null
+        if (stdIntervals < 3.0) return null
         var watermark = ""
         for (i in line)
             if (i > meanInterval + stdIntervals*0.35) {

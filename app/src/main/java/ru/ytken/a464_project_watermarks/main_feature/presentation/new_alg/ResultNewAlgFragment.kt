@@ -80,82 +80,88 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
             imageButtonClosing.visibility = View.VISIBLE
             val watermarkSize = 24
             val resMatrix = ""
-            if (lineBounds.isEmpty()) {
-                Log.d("pppppp","pppppp")
+            for (line in lineBounds) {
+                Log.d("elelel","$line")
             }
-            Log.d("alalalala","${lineBounds.size}")
             try{
+                var count=0
                 val lineIntervals = ArrayList<ArrayList<Int>>()
                 var watermarking = ""
                 for (line in lineBounds) {
                     if (line.size%8!=0) {
-                        val lenth = line.size-line.size%8
-                        var mut: java.util.ArrayList<Int> = line
+                        val length = line.size-line.size%8
+                        val mut: java.util.ArrayList<Int> = line
                         var mutty: MutableList<Int> = mut.toMutableList()
-                        mutty = mut.subList(0, lenth)
+                        mutty = mut.subList(0, length)
                         val arr: ArrayList<Int> = ArrayList(mutty)
                         lineIntervals.add(arr)
                         val num = arr.chunked(8)
+                        Log.d("$line","llllllll")
                         for (i in num) {
+                            Log.d("$i","numnumnum")
                             avg.add(i.average().toInt())
                         }
                         for (i in num) {
                             val sr = i.average().toInt()
+                            Log.d("$sr","srsrsrsrsr")
                             var war=""
                             for (j in i) {
-                                if (j<=sr) {
+                                if (j<sr) {
                                     war += 0
-                                } else {
+                                } else if (j==sr){
                                     war += 1
+                                } else {
+                                    war += 2
                                 }
                             }
-                            Log.d(war,"warwarwar")
-                            val comp1 = compareStr(war, "00001111")
-                            Log.d(comp1.toString(),"comp1comp1")
-                            val comp2 = compareStr(war, "11110000")
-                            Log.d(comp2.toString(),"comp2comp2")
-                            if (comp1>comp2) {
+                            val comp1 = compareStr(war, "00022211")
+                            Log.d("$comp1","comp1comp1")
+                            val comp2 = compareStr(war, "12221000")
+                            Log.d("$comp2","comp2comp2")
+                            if (comp1<comp2) {
                                 watermarking+=1
                             } else {
                                 watermarking+=0
                             }
+                            Log.d(war,"warwarwar1")
+                            count+=1
                         }
                         avgLine.add(avg)
                     } else {
                         lineIntervals.add(line)
+                        Log.d("$line","llllllll")
                         val num = line.chunked(8)
                         for (i in num) {
+                            Log.d("$i","numnumnum")
                             avg.add(i.average().toInt())
                         }
                         for (i in num) {
                             val sr = i.average().toInt()
+                            Log.d("$sr","srsrsrsrsr")
                             var war=""
                             for (j in i) {
-                                if (j<=sr) {
+                                if (j<sr) {
                                     war += 0
-                                } else {
+                                } else if (j==sr){
                                     war += 1
+                                } else {
+                                    war+=2
                                 }
                             }
-                            Log.d(war,"warwarwar")
-                            val comp1 = compareStr(war, "00001111")
-                            Log.d(comp1.toString(),"comp1comp1")
-                            val comp2 = compareStr(war, "11110000")
-                            Log.d(comp2.toString(),"comp2comp2")
-                            if (comp1>comp2) {
+                            val comp1 = compareStr(war, "00022211")
+                            val comp2 = compareStr(war, "12221000")
+                            if (comp1<comp2) {
                                 watermarking+=1
-                            } else if (comp2<comp1){
+                            } else {
                                 watermarking+=0
                             }
+                            count+=1
+                            Log.d(war,"warwarwar2")
                         }
                         avgLine.add(avg)
                     }
                 }
-                for (i in avg) {
-                    Log.d("$i","iiiii")
-                }
-//                val result = res(avg)
-//                setTextButton(result.subSequence(0,24).toString())
+                Log.d("$count","countcount")
                 setTextButton(watermarking.subSequence(0,24).toString())
                 vm.setLetterText(resMatrix)
                 val res = vm.compareStrings(watermarking.subSequence(0,watermarkSize).toString())
@@ -165,7 +171,6 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
             }
             progressBarWaitForScan.visibility = View.INVISIBLE
             textViewProgress.visibility = View.INVISIBLE
-
         }
     }
 
@@ -179,29 +184,29 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
         return count / str1.length
     }
 
-    private fun res(line: ArrayList<Int>): String {
-        val meanInterval = line.mean()
-        val stdIntervals = line.std()
-        var watermark = ""
-        for (i in line)
-            if (i > meanInterval + stdIntervals*0.35) {
-                watermark += "1"
-            }
-            else {
-                watermark += 0
-            }
-        return watermark
-    }
+//    private fun res(line: ArrayList<Int>): String {
+//        val meanInterval = line.mean()
+//        val stdIntervals = line.std()
+//        var watermark = ""
+//        for (i in line)
+//            if (i > meanInterval + stdIntervals*0.35) {
+//                watermark += "1"
+//            }
+//            else {
+//                watermark += 0
+//            }
+//        return watermark
+//    }
 
-    private fun ArrayList<Int>.mean(): Float = this.sum().toFloat() / this.size
-
-    private fun ArrayList<Int>.std(): Float {
-        val mean = this.mean()
-        var sqSum = 0f
-        for (i in this) sqSum += (i - mean)*(i - mean)
-        sqSum /= this.size
-        return sqrt(sqSum)
-    }
+//    private fun ArrayList<Int>.mean(): Float = this.sum().toFloat() / this.size
+//
+//    private fun ArrayList<Int>.std(): Float {
+//        val mean = this.mean()
+//        var sqSum = 0f
+//        for (i in this) sqSum += (i - mean)*(i - mean)
+//        sqSum /= this.size
+//        return sqrt(sqSum)
+//    }
 
     private fun setTextButton(text: String) {
         textViewRecognizedText.visibility = View.VISIBLE
