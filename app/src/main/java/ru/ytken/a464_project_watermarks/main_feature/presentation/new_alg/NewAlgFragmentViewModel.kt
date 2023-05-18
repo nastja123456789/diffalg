@@ -9,6 +9,7 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.ArrayMap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,8 +36,12 @@ class NewAlgFragmentViewModel: ViewModel() {
 
     private val liveHasText = MutableLiveData<Boolean>()
     val hasText: LiveData<Boolean> = liveHasText
-
+    val l: ArrayList<ArrayList<ArrayList<Int>>> = ArrayList()
     var lineBounds: ArrayList<ArrayList<Int>> = ArrayList()
+    var resting: ArrayList<ArrayList<ArrayList<Int>>> = ArrayList()
+    var remov: ArrayList<ArrayList<Int>> = ArrayList()
+    var lost: ArrayList<ArrayList<Int>> = ArrayList()
+    var removing: ArrayList<Int> = ArrayList()
 //    private var symBounds: MutableList<Int> = ArrayList()
 //    var symBounds: ArrayList<Int> = ArrayList()
 
@@ -92,28 +97,92 @@ class NewAlgFragmentViewModel: ViewModel() {
                             for (block in maxBlocks!!) {
                                 for (line in block.lines) {
                                     val symBounds: ArrayList<Int> = ArrayList()
+                                    val map: ArrayList<ArrayList<Int>> = ArrayList()
                                     for (element in line.elements) {
 //                                        symBounds.clear()
                                         for (char in element.symbols) {
-                                            Log.d(char.text,"yyyyyyy")
+//                                            Log.d(char.text,"yyyyyyy")
                                             char.boundingBox?.let {
                                                 shapeDrawable.bounds = it
                                                 symBounds.add(it.width())
-                                                Log.d("adding","${it.width()}")
+                                                val ar: ArrayList<Int> = ArrayList()
+                                                ar.add(it.left)
+                                                ar.add(it.right)
+                                                map.add(ar)
                                             }
                                             if (canvas != null) {
                                                 shapeDrawable.draw(canvas)
                                             }
                                         }
                                     }
-                                    Log.d("$symBounds","symsymsym")
+                                    l.add(map)
+//                                    Log.d("$symBounds","symsymsym")
                                     lineBounds.add(symBounds)
                                 }
                             }
-                            for (line in lineBounds) {
+                            for (line in l) {
                                     Log.d("elelel","$line")
                             }
-                            Log.d("${lineBounds.size}","alalalala")
+                            for (line in l) {
+                                        if (line.size%8!=0) {
+                                            val length = line.size-line.size%8
+                                            val mut: java.util.ArrayList<ArrayList<Int>> = line
+                                            var mutty: MutableList<ArrayList<Int>> = mut.toMutableList()
+                                            mutty = mut.subList(0, length)
+                                            val arr: ArrayList<ArrayList<Int>> = ArrayList(mutty)
+                                            val num = arr.chunked(8)
+                                            val siz = num.size
+                                            var res: ArrayList<ArrayList<Int>> = ArrayList()
+                                            for (i in num) {
+//                                                Log.d("$i","numnumnum")
+                                                var a:ArrayList<Int> = ArrayList()
+                                                for (j in 1..i.size-1) {
+                                                    if (j!=i.size-1) {
+                                                        val adding = i[j][0]-i[j-1][0]
+                                                        a.add(adding)
+                                                    } else {
+                                                        a.add(i[j][0]-i[j-1][0])
+                                                        a.add(i[j][1]-i[j][0])
+                                                    }
+                                                }
+                                                res.add(a)
+                                            }
+                                            resting.add(res)
+                                        } else {
+                                            val num = line.chunked(8)
+                                            var res: ArrayList<ArrayList<Int>> = ArrayList()
+                                            for (i in num) {
+//                                                Log.d("$i","numnumnum")
+                                                var a:ArrayList<Int> = ArrayList()
+                                                for (j in 1..i.size-1) {
+                                                    if (j!=i.size-1) {
+                                                        val adding = i[j][0]-i[j-1][0]
+                                                        a.add(adding)
+                                                    } else {
+                                                        a.add(i[j][0]-i[j-1][0])
+                                                        a.add(i[j][1]-i[j][0])
+                                                    }
+                                                }
+                                                res.add(a)
+                                            }
+                                            resting.add(res)
+                                        }
+                                    }
+                            for (i in resting){
+                                val r: ArrayList<Int> = ArrayList()
+                                for (k in i) {
+                                    for (m in k) {
+                                        r.add(m)
+                                    }
+                                }
+                                lost.add(r)
+                            }
+                            for (i in resting) {
+                                Log.d("$i","kokokoko")
+                            }
+                            for (i in lost) {
+                                Log.d("$i","rararara")
+                            }
                             liveHasText.value = true
                         } else {
                             liveHasText.value = false

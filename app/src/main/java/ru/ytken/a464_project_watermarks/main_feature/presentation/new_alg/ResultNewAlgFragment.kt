@@ -62,7 +62,8 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
         }
         setFragmentResultListener("arrayListArrayList") {
                 _, bun ->
-            vm.lineBounds = bun.getSerializable("arrayList") as ArrayList<ArrayList<Int>>
+//            vm.lineBounds = bun.getSerializable("arrayList") as ArrayList<ArrayList<Int>>
+            vm.lost = bun.getSerializable("arrayList") as ArrayList<ArrayList<Int>>
         }
         imageButtonClosing.setOnClickListener {
             findNavController().popBackStack(R.id.buttonFragment, true)
@@ -74,8 +75,8 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
         progressBarWaitForScan.visibility = View.VISIBLE
         textViewProgress.visibility = View.VISIBLE
         textViewProgress.text = getString(R.string.ScanningImage)
-        val lineBounds = vm.lineBounds
-
+        val lineBounds = vm.lost
+//        val lineBounds = vm.lineBounds
         fileWithImage.let {
             imageButtonClosing.visibility = View.VISIBLE
             val watermarkSize = 24
@@ -96,14 +97,14 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
                         val arr: ArrayList<Int> = ArrayList(mutty)
                         lineIntervals.add(arr)
                         val num = arr.chunked(8)
-                        Log.d("$line","llllllll")
+//                        Log.d("$line","llllllll")
                         for (i in num) {
-                            Log.d("$i","numnumnum")
+//                            Log.d("$i","numnumnum")
                             avg.add(i.average().toInt())
                         }
                         for (i in num) {
                             val sr = i.average().toInt()
-                            Log.d("$sr","srsrsrsrsr")
+//                            Log.d("$sr","srsrsrsrsr")
                             var war=""
                             for (j in i) {
                                 if (j<sr) {
@@ -115,29 +116,29 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
                                 }
                             }
                             val comp1 = compareStr(war, "00022211")
-                            Log.d("$comp1","comp1comp1")
+//                            Log.d("$comp1","comp1comp1")
                             val comp2 = compareStr(war, "12221000")
-                            Log.d("$comp2","comp2comp2")
+//                            Log.d("$comp2","comp2comp2")
                             if (comp1<comp2) {
                                 watermarking+=1
                             } else {
                                 watermarking+=0
                             }
-                            Log.d(war,"warwarwar1")
+//                            Log.d(war,"warwarwar1")
                             count+=1
                         }
                         avgLine.add(avg)
                     } else {
                         lineIntervals.add(line)
-                        Log.d("$line","llllllll")
+//                        Log.d("$line","llllllll")
                         val num = line.chunked(8)
                         for (i in num) {
-                            Log.d("$i","numnumnum")
+//                            Log.d("$i","numnumnum")
                             avg.add(i.average().toInt())
                         }
                         for (i in num) {
                             val sr = i.average().toInt()
-                            Log.d("$sr","srsrsrsrsr")
+//                            Log.d("$sr","srsrsrsrsr")
                             var war=""
                             for (j in i) {
                                 if (j<sr) {
@@ -156,7 +157,7 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
                                 watermarking+=0
                             }
                             count+=1
-                            Log.d(war,"warwarwar2")
+//                            Log.d(war,"warwarwar2")
                         }
                         avgLine.add(avg)
                     }
@@ -183,30 +184,6 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
         }
         return count / str1.length
     }
-
-//    private fun res(line: ArrayList<Int>): String {
-//        val meanInterval = line.mean()
-//        val stdIntervals = line.std()
-//        var watermark = ""
-//        for (i in line)
-//            if (i > meanInterval + stdIntervals*0.35) {
-//                watermark += "1"
-//            }
-//            else {
-//                watermark += 0
-//            }
-//        return watermark
-//    }
-
-//    private fun ArrayList<Int>.mean(): Float = this.sum().toFloat() / this.size
-//
-//    private fun ArrayList<Int>.std(): Float {
-//        val mean = this.mean()
-//        var sqSum = 0f
-//        for (i in this) sqSum += (i - mean)*(i - mean)
-//        sqSum /= this.size
-//        return sqrt(sqSum)
-//    }
 
     private fun setTextButton(text: String) {
         textViewRecognizedText.visibility = View.VISIBLE

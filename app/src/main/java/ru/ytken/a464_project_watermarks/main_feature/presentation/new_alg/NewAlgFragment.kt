@@ -55,8 +55,12 @@ class NewAlgFragment : Fragment(R.layout.fragment_new_alg) {
             )
             val uri = Uri.parse(path)
             setFragmentResult("fromNewAlgToResultNewAlg", bundleOf("uri" to uri.toString()))
-            val arr = vm.lineBounds
-            for (i in vm.lineBounds) {
+//            val arr = vm.lineBounds
+//            for (i in vm.lineBounds) {
+//                Log.d("$i","lollol")
+//            }
+            val arr = vm.lost
+            for (i in vm.lost) {
                 Log.d("$i","lollol")
             }
 
