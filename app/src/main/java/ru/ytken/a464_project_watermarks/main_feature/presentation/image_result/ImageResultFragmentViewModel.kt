@@ -56,7 +56,6 @@ class ImageResultFragmentViewModel: ViewModel() {
         var maxBitmap: Bitmap = imageBitmap
         var maxText = 0
         var maxBlocks: List<Text.TextBlock>? = null
-//        var maxTexting: List<String>
         lineBounds.clear()
         val copyBitmap = imageBitmap.rotateBitmap(0).copy(Bitmap.Config.ARGB_8888,false)
         val image = InputImage.fromBitmap(copyBitmap, 0)
@@ -71,7 +70,6 @@ class ImageResultFragmentViewModel: ViewModel() {
                 }
                 .addOnCompleteListener {
                     val mutableImageBitmap = maxBitmap.copy(Bitmap.Config.ARGB_8888,true)
-
                     val canvas = Canvas(mutableImageBitmap)
                     val shapeDrawable = ShapeDrawable(RectShape())
                     shapeDrawable.paint.style = Paint.Style.STROKE
@@ -87,9 +85,6 @@ class ImageResultFragmentViewModel: ViewModel() {
                                 shapeDrawable.draw(canvas)
                             }
                         }
-                        for (i in lineBounds) {
-                            Log.d("lineline","$i")
-                        }
                         liveHasText.value = true
                     } else {
                         liveHasText.value = false
@@ -97,53 +92,8 @@ class ImageResultFragmentViewModel: ViewModel() {
 
                     liveInitImage.value = maxBitmap
                     liveHighlightedImage.value = mutableImageBitmap
-//                    if (i == 360) {
-//
-//                    }
                 }
         }
-//        for(i in 0..360 step 90 ) {
-//            val copyBitmap = imageBitmap.rotateBitmap(i).copy(Bitmap.Config.ARGB_8888,false)
-//            val image = InputImage.fromBitmap(copyBitmap, 0)
-//                viewModelScope.async(Dispatchers.Default) {
-//                    recognizer.process(image)
-//                        .addOnSuccessListener { visionText ->
-//                            if (visionText.text.length > maxText) {
-//                                maxText = visionText.text.length
-//                                maxBitmap = copyBitmap
-//                                maxBlocks = visionText.textBlocks
-//                            }
-//                        }
-//                        .addOnCompleteListener {
-//                            if (i == 360) {
-//                                val mutableImageBitmap = maxBitmap.copy(Bitmap.Config.ARGB_8888,true)
-//
-//                                val canvas = Canvas(mutableImageBitmap)
-//                                val shapeDrawable = ShapeDrawable(RectShape())
-//                                shapeDrawable.paint.style = Paint.Style.STROKE
-//                                shapeDrawable.paint.strokeWidth = 10F
-//
-//                                if (maxBlocks != null) {
-//                                    for (block in maxBlocks!!) {
-//                                        for (line in block.lines) {
-//                                            line.boundingBox?.let {
-//                                                shapeDrawable.bounds = it
-//                                                lineBounds.add(it.centerY())
-//                                                Log.d("adding","${it.centerY()}")
-//                                            }
-//                                            shapeDrawable.draw(canvas)
-//                                        }
-//                                    }
-//                                    liveHasText.value = true
-//                                } else {
-//                                    liveHasText.value = false
-//                                }
-//
-//                                liveInitImage.value = maxBitmap
-//                                liveHighlightedImage.value = mutableImageBitmap
-//                            } }
-//                }
-//        }
     }
 
     fun setScanImageToInit() {

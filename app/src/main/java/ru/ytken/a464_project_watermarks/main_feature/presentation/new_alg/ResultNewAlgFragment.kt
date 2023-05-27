@@ -76,14 +76,10 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
         textViewProgress.visibility = View.VISIBLE
         textViewProgress.text = getString(R.string.ScanningImage)
         val lineBounds = vm.lost
-//        val lineBounds = vm.lineBounds
         fileWithImage.let {
             imageButtonClosing.visibility = View.VISIBLE
             val watermarkSize = 24
             val resMatrix = ""
-            for (line in lineBounds) {
-                Log.d("elelel","$line")
-            }
             try{
                 var count=0
                 val lineIntervals = ArrayList<ArrayList<Int>>()
@@ -97,14 +93,11 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
                         val arr: ArrayList<Int> = ArrayList(mutty)
                         lineIntervals.add(arr)
                         val num = arr.chunked(8)
-//                        Log.d("$line","llllllll")
                         for (i in num) {
-//                            Log.d("$i","numnumnum")
                             avg.add(i.average().toInt())
                         }
                         for (i in num) {
                             val sr = i.average().toInt()
-//                            Log.d("$sr","srsrsrsrsr")
                             var war=""
                             for (j in i) {
                                 if (j<sr) {
@@ -116,29 +109,24 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
                                 }
                             }
                             val comp1 = compareStr(war, "00022211")
-//                            Log.d("$comp1","comp1comp1")
                             val comp2 = compareStr(war, "12221000")
-//                            Log.d("$comp2","comp2comp2")
                             if (comp1<comp2) {
                                 watermarking+=1
                             } else {
                                 watermarking+=0
                             }
-//                            Log.d(war,"warwarwar1")
                             count+=1
                         }
                         avgLine.add(avg)
-                    } else {
+                    }
+                    else {
                         lineIntervals.add(line)
-//                        Log.d("$line","llllllll")
                         val num = line.chunked(8)
                         for (i in num) {
-//                            Log.d("$i","numnumnum")
                             avg.add(i.average().toInt())
                         }
                         for (i in num) {
                             val sr = i.average().toInt()
-//                            Log.d("$sr","srsrsrsrsr")
                             var war=""
                             for (j in i) {
                                 if (j<sr) {
@@ -162,7 +150,6 @@ class ResultNewAlgFragment : Fragment(R.layout.fragment_result_new_alg) {
                         avgLine.add(avg)
                     }
                 }
-                Log.d("$count","countcount")
                 setTextButton(watermarking.subSequence(0,24).toString())
                 vm.setLetterText(resMatrix)
                 val res = vm.compareStrings(watermarking.subSequence(0,watermarkSize).toString())

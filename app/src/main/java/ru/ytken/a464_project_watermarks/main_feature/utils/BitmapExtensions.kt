@@ -38,50 +38,11 @@ object BitmapExtensions {
         return bmpGrayscale
     }
 
-    fun makeImageSharpGaussian(srcBitmap: Bitmap, context: Context): Bitmap {
-        val sharp = floatArrayOf(
-            -0.60f, -0.60f, -0.60f,
-            -0.60f, 5.81f, -0.60f,
-            -0.60f, -0.60f, -0.60f
-        )
-
-        val sharp2 = floatArrayOf(
-            0f, -1f, 0f,
-            -1f, 5f, -1f,
-            0f, -1f, 0f
-        )
-
-        val sharp3 = floatArrayOf(
-            -0.15f, -0.15f, -0.15f,
-            -0.15f, 2.2f, -0.15f,
-            -0.15f, -0.15f, -0.15f
-        )
-
-        val sharp4 = floatArrayOf(
-            -0.1f, -0.1f, -0.1f,
-            -0.1f, 2f, -0.1f,
-            -0.1f, -0.1f, -0.1f
-        )
-
-        val sharp5 = floatArrayOf(
-            -0.1f, 0.1f, -0.1f,
-            0.1f, 0.5f, 0.1f,
-            -0.1f, 0.1f, -0.1f
-        )
-
-        val sharp6 = floatArrayOf(
-            0.0f, -1.0f, 0.0f,
-            -1.0f, 5.0f, -1.0f,
-            0.0f, -1.0f, 0.0f
-        )
-
-//        val bit = srcBitmap.applySharpen(sharp4, context)
-//        return bit
+    fun makeImageSharpGaussian(srcBitmap: Bitmap): Bitmap {
         val src = Mat()
         Utils.bitmapToMat(srcBitmap, src)
         val dest = Mat(src.rows(), src.cols(), src.type())
         val convMat = Mat(3, 3, CvType.CV_32F)
-
         convMat.put(0,0, -0.1)
         convMat.put(0,1, -0.1)
         convMat.put(0,2, -0.1)
@@ -93,9 +54,6 @@ object BitmapExtensions {
         convMat.put(2,2, -0.1)
         val point = org.opencv.core.Point(-1.0,-1.0)
         filter2D(src, dest, -1, convMat, point)
-        //filter2D(src, dest, -1, convMat)
-//        GaussianBlur(src, dest, Size(0.0,0.0), 10.0)
-//        addWeighted(src, 1.5, dest, -0.5, 0.0, dest)
         val sharpBitmap = Bitmap.createBitmap(dest.cols(), dest.rows(), Bitmap.Config.ARGB_8888)
         Utils.matToBitmap(dest, sharpBitmap)
         return sharpBitmap

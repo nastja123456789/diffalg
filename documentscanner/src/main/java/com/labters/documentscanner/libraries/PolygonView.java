@@ -1,12 +1,3 @@
-/*
- * *
- *  * Created by Ali YÜCE on 3/2/20 11:18 PM
- *  * https://github.com/mayuce/
- *  * Copyright (c) 2020 . All rights reserved.
- *  * Last modified 3/2/20 11:10 PM
- *
- */
-
 package com.labters.documentscanner.libraries;
 
 import android.content.Context;
@@ -29,9 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by jhansi on 28/03/15.
- */
 public class PolygonView extends FrameLayout {
 
     protected Context context;

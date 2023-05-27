@@ -10,7 +10,6 @@ def gmm_alg(M):
             else:
                 counts[item] = 1
         return [key for key in counts.keys() if counts[key] == max(counts.values())]
-
     def correction(arr):
         max_mode, min_mode = max(mode(arr)), min(mode(arr))
         k = 0
@@ -26,13 +25,10 @@ def gmm_alg(M):
             i -= 1
             k += 1
         return arr
-
     M=correction(M)
     x = np.zeros((len(M), 2))
     for i, a in enumerate(M):
         x[i] = [i, a**2]
-    # np.random.seed(70)
-    # gm = GMM(4)
     gm = GMM(2)
     gm.fit(x)
     clusters = gm.predict(x)
@@ -44,7 +40,6 @@ def gmm_alg(M):
         else:
             zeros.insert(0, M[i])
     watermark = ""
-
     mode_zeros = mode(zeros)
     mode_first = mode(first)
     if mode(mode_zeros) > mode(mode_first):

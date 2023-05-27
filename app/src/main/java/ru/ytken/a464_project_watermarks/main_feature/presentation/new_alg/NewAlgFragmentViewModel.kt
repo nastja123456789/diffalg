@@ -116,12 +116,8 @@ class NewAlgFragmentViewModel: ViewModel() {
                                         }
                                     }
                                     l.add(map)
-//                                    Log.d("$symBounds","symsymsym")
                                     lineBounds.add(symBounds)
                                 }
-                            }
-                            for (line in l) {
-                                    Log.d("elelel","$line")
                             }
                             for (line in l) {
                                         if (line.size%8!=0) {
@@ -132,10 +128,9 @@ class NewAlgFragmentViewModel: ViewModel() {
                                             val arr: ArrayList<ArrayList<Int>> = ArrayList(mutty)
                                             val num = arr.chunked(8)
                                             val siz = num.size
-                                            var res: ArrayList<ArrayList<Int>> = ArrayList()
+                                            val res: ArrayList<ArrayList<Int>> = ArrayList()
                                             for (i in num) {
-//                                                Log.d("$i","numnumnum")
-                                                var a:ArrayList<Int> = ArrayList()
+                                                val a:ArrayList<Int> = ArrayList()
                                                 for (j in 1..i.size-1) {
                                                     if (j!=i.size-1) {
                                                         val adding = i[j][0]-i[j-1][0]
@@ -148,7 +143,8 @@ class NewAlgFragmentViewModel: ViewModel() {
                                                 res.add(a)
                                             }
                                             resting.add(res)
-                                        } else {
+                                        }
+                                        else {
                                             val num = line.chunked(8)
                                             var res: ArrayList<ArrayList<Int>> = ArrayList()
                                             for (i in num) {
@@ -176,12 +172,6 @@ class NewAlgFragmentViewModel: ViewModel() {
                                     }
                                 }
                                 lost.add(r)
-                            }
-                            for (i in resting) {
-                                Log.d("$i","kokokoko")
-                            }
-                            for (i in lost) {
-                                Log.d("$i","rararara")
                             }
                             liveHasText.value = true
                         } else {
