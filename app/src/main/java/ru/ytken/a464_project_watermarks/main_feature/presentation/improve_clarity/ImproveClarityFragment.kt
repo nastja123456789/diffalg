@@ -31,7 +31,7 @@ class ImproveClarityFragment : Fragment(R.layout.fragment_improve_clarity) {
             )
             val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
             //val bitmapp = makeImageSharpGaussian(bitmap, 1.0)
-            val bitmapp = makeImageSharpGaussian(bitmap, requireContext())
+            val bitmapp = makeImageSharpGaussian(bitmap)
             imageViewResultImage.setImageBitmap(bitmapp)
             buttonSeeSkan.setOnClickListener {
                 val bytes = ByteArrayOutputStream()
